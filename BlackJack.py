@@ -1,10 +1,11 @@
 # Author: Tyne Readman
 # Date Created: January 19, 2023
 #
-# TO BE IMPROVED:
-#   -Impoper Nameing convections
-#   -Concise and more readabul coments (In progesse as of Sept 20th 2024)
-#   -Make leaderBord mode by adding a blue button to the left of 
+# IMPROVEMENTS TO BE MADE:
+#   - Fix improper naming conventions for variables, classes and functions.
+#   - Make comments more concise and readable (Work in progress as of Sept 20th, 2024).
+#   - Implement a leaderboard mode by adding a blue button to the left of the "Start" button on the title screen.
+#   - Add a "Quit Game" button to the betting screen for better user control.
 #
 # Description:
 # This is a simple blackjack game that begins with a title screen featuring two buttons: "Play" and "Quit".

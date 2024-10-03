@@ -1,4 +1,5 @@
 import random
+from BlackJack import Hit_Delaer_Hand
 from graphics import *
 
 game_mode = 1
@@ -313,7 +314,7 @@ def play_game(cash, bet):
         d_total.del_text()  # Remove old dealer total
 
     d_total.del_text()  # Clear dealer total after player decision
-    Hit_Delaer_Hand(delaer_hand)  # Dealer's turn to hit
+    Hit_Delaer_Hand(delaer_hand)  # Dealer's turn to hit 
     delaer_total = find_hand_total(delaer_hand)
 
     # Reprint dealer's full hand
@@ -324,30 +325,22 @@ def play_game(cash, bet):
     end_game.draw_button()
 
     # Determine game outcome
-    if user_total == delaer_total:
-        print("Tie")
-        outcome = "Tie"
-    elif user_total > 21 and delaer_total > 21:
+    if user_total > 21 and delaer_total > 21:
         print("Tie")
         outcome = "Tie"
     elif user_total > 21:
         print("Lose")
         outcome = "Lose"
-    elif user_total == 21:
+    elif delaer_total > 21 or user_total == 21 or user_total > delaer_total:
         print("Win")
         outcome = "Win"
-    elif delaer_total > 21:
-        print("Win")
-        outcome = "Win"
-    elif user_total > delaer_total:
-        print("Win")
-        outcome = "Win"
-    elif user_total < delaer_total:
+    elif user_total == delaer_total:
+        print("Tie")
+        outcome = "Tie"
+    else:
         print("Lose")
         outcome = "Lose"
-    else:
-        print("Error")
-        outcome = "Error"
+
 
     end = mod_text(outcome, 700, 350, 30)  # Display the outcome
     end.print_text()
