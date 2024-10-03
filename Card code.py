@@ -1,5 +1,5 @@
 import random
-from BlackJack import Hit_Delaer_Hand
+from Blackjack import Hit_Delaer_Hand
 from graphics import *
 
 game_mode = 1

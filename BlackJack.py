@@ -393,130 +393,128 @@ def play_game(cash, bet, all_cards_in_play):
     hand = deal_hand(all_cards_in_play)  # Deal cards to the user
     delaer_hand = deal_hand(all_cards_in_play)  # Deal cards to the dealer
 
-    def playGame():
-
-        while True:
-            # Main game loop for user actions (hit or hold) until they either hold or their total reaches 21 or more
-
-            user_total = find_hand_total(hand)  # Calculate the user's hand total
-            delaer_total = find_hand_total(delaer_hand)  # Calculate the dealer's hand total
-
-            # Display the user's and dealer's cards
-            for i in range(len(hand)):
-                print_image(hand[i], 80 + 86 + (i * 180), 450)  # Display each card in the user's hand
-            for i in range(len(delaer_hand)):
-                print_image(delaer_hand[i], 80 + 86 + (i * 180), 50)  # Display each card in the dealer's hand
-
-            # Display the user's total, dealer's total, cash, and bet amount
-            total = mod_text("Hand Total: " + str(user_total), 250, 400, 20)  # Display the user's hand total
-            total.print_text()
-            d_total = mod_text("Dealer Total: " + str(delaer_total), 257, 350, 20)  # Display the dealer's hand total
-            d_total.print_text()
-            user_cash = mod_text("Cash: " + str(cash), 200, 20, 15)  # Display the user's current cash
-            user_cash.print_text()
-            bet_amount = mod_text("Bet: " + str(bet), 320, 20, 15)  # Display the current bet amount
-            bet_amount.print_text()
-
-            # End game early if user reaches or exceeds 21
-            if user_total >= 21:
-                break
-
-            # Create and display the "Hit" and "Hold" buttons
-            hit = button(630, 420, 120, 40, "green")  # Create the hit button
-            hit.draw_button()  # Draw the hit button
-            hit_text = mod_text("Hit", 630, 420, 15)  # Label the hit button
-            hit_text.print_text()
-
-            hold = button(770, 420, 120, 40, "green")  # Create the hold button
-            hold.draw_button()  # Draw the hold button
-            hold_text = mod_text("Hold", 770, 420, 15)  # Label the hold button
-            hold_text.print_text()
-
-            clicked = win.getMouse()  # Wait for the user to click somewhere
-
-            if hit.check_click(clicked) == 1:
-                # If the hit button was clicked, add a card to the user's hand
-                hand.append(pull_card(all_cards_in_play))
-            if hold.check_click(clicked) == 1:
-                # If the hold button was clicked, end the game loop
-                break
-
-            # Remove previous totals from the screen to update them later
-            total.del_text()
-            d_total.del_text()
-
-        d_total.del_text()  # Remove the dealer's total to update it later
-        Hit_Delaer_Hand(delaer_hand, all_cards_in_play)  # Let the dealer hit until they reach 17 or more
-        delaer_total = find_hand_total(delaer_hand)  # Update the dealer's hand total
-        d_total = mod_text("Dealer Total: " + str(delaer_total), 257, 350, 20)  # Display the updated dealer total
-        d_total.print_text()
-
-        # Display the dealer's updated hand
-        for i in range(len(delaer_hand)):
-            print_image(delaer_hand[i], 80 + 86 + (i * 180), 50)
-
-            # Determine the outcome of the game based on the final totals
-        if user_total > 21 and delaer_total > 21:
-            outcome = "Tie"
-        elif user_total == delaer_total:
-            outcome = "Tie"
-        elif user_total > 21:
-            outcome = "Lose"
-        elif delaer_total > 21 or user_total == 21 or user_total > delaer_total:
-            outcome = "Win"
-        else:
-            outcome = "Lose"
-
-        print(outcome)
-
-
-        # Display the outcome of the game and create buttons for "Play Again" and "Quit"
-        end_game = button(700, 350, 150, 75, "red")  # Create a rectangle to show the game outcome
-        end_game.draw_button()
-        end = mod_text(outcome, 700, 350, 30)  # Display the game outcome (win, lose, tie)
-        end.print_text()
-
-        # Create the "Play Again" and "Quit" buttons
-        play_again_button = button(100, 100, 100, 100, "red")
-        play_again_button.draw_button()
-        play_again_text = mod_text("Play Again?", 100, 100, 13)
-        play_again_text.print_text()
-
-        quit_button = button(100, 220, 100, 100, "red")
-        quit_button.draw_button()
-        quit_text = mod_text("Quit?",100,220,13)
-        quit_text.print_text()
-
-        print("ALL CARDS:", all_cards_in_play)
-
-        while True:  # Keep running until a button is clicked
-            clicked = win.getMouse()  # Wait for a mouse click
-            if play_again_button.check_click(clicked) == 1:  # Check if "Play Again" button is clicked
-                win.close()
-                return outcome  # Return the outcome of the game
-            if quit_button.check_click(clicked) == 1:  # Check if "Quit" button is clicked
-                win.close()
-                return 'quit'  # Return 'quit' to exit the game
-
     while True:
-        if game_mode == 1:  # Lobby: allows player to navigate to other game modes
-            button_pressed = game_lobby()  # Display the lobby and get the button pressed
-            if button_pressed == "play":  # If "Play" button is pressed
-                game_mode = 2  # Switch to game mode 2
-            elif button_pressed == 'quit':  # If "Quit" button is pressed
-                break  # Exit the main game loop
+        # Main game loop for user actions (hit or hold) until they either hold or their total reaches 21 or more
 
-        if game_mode == 2:  # Game mode 2: gameplay phase
-            all_cards_in_play = []  # Reset the list of cards in play for each game
-            bet = make_bet(cash)  # Prompt the player to make a bet
-            int(bet)  # Convert bet to an integer
-            cash -= int(bet)  # Deduct the bet amount from cash
-            outcome = play_game(cash, bet, all_cards_in_play)  # Play the game and get the outcome
-            
-            # Update cash based on the game outcome
-            if outcome == "Win":  # If the player wins
-                cash += int(bet) * 2  # Double the bet amount is added to cash
-            elif outcome == "Tie":  # If the game is a tie
-                cash += int(bet)  # Refund the bet amount to cash
-            elif outcome == "quit":  # If the player decides to quit
-                game_mode = 1  # Return to the lobby
+        user_total = find_hand_total(hand)  # Calculate the user's hand total
+        delaer_total = find_hand_total(delaer_hand)  # Calculate the dealer's hand total
+
+        # Display the user's and dealer's cards
+        for i in range(len(hand)):
+            print_image(hand[i], 80 + 86 + (i * 180), 450)  # Display each card in the user's hand
+        for i in range(len(delaer_hand)):
+            print_image(delaer_hand[i], 80 + 86 + (i * 180), 50)  # Display each card in the dealer's hand
+
+        # Display the user's total, dealer's total, cash, and bet amount
+        total = mod_text("Hand Total: " + str(user_total), 250, 400, 20)  # Display the user's hand total
+        total.print_text()
+        d_total = mod_text("Dealer Total: " + str(delaer_total), 257, 350, 20)  # Display the dealer's hand total
+        d_total.print_text()
+        user_cash = mod_text("Cash: " + str(cash), 200, 20, 15)  # Display the user's current cash
+        user_cash.print_text()
+        bet_amount = mod_text("Bet: " + str(bet), 320, 20, 15)  # Display the current bet amount
+        bet_amount.print_text()
+
+        # End game early if user reaches or exceeds 21
+        if user_total >= 21:
+            break
+
+        # Create and display the "Hit" and "Hold" buttons
+        hit = button(630, 420, 120, 40, "green")  # Create the hit button
+        hit.draw_button()  # Draw the hit button
+        hit_text = mod_text("Hit", 630, 420, 15)  # Label the hit button
+        hit_text.print_text()
+
+        hold = button(770, 420, 120, 40, "green")  # Create the hold button
+        hold.draw_button()  # Draw the hold button
+        hold_text = mod_text("Hold", 770, 420, 15)  # Label the hold button
+        hold_text.print_text()
+
+        clicked = win.getMouse()  # Wait for the user to click somewhere
+
+        if hit.check_click(clicked) == 1:
+            # If the hit button was clicked, add a card to the user's hand
+            hand.append(pull_card(all_cards_in_play))
+        if hold.check_click(clicked) == 1:
+            # If the hold button was clicked, end the game loop
+            break
+
+        # Remove previous totals from the screen to update them later
+        total.del_text()
+        d_total.del_text()
+
+    d_total.del_text()  # Remove the dealer's total to update it later
+    Hit_Delaer_Hand(delaer_hand, all_cards_in_play)  # Let the dealer hit until they reach 17 or more
+    delaer_total = find_hand_total(delaer_hand)  # Update the dealer's hand total
+    d_total = mod_text("Dealer Total: " + str(delaer_total), 257, 350, 20)  # Display the updated dealer total
+    d_total.print_text()
+
+    # Display the dealer's updated hand
+    for i in range(len(delaer_hand)):
+        print_image(delaer_hand[i], 80 + 86 + (i * 180), 50)
+
+        # Determine the outcome of the game based on the final totals
+    if user_total > 21 and delaer_total > 21:
+        outcome = "Tie"
+    elif user_total == delaer_total:
+        outcome = "Tie"
+    elif user_total > 21:
+        outcome = "Lose"
+    elif delaer_total > 21 or user_total == 21 or user_total > delaer_total:
+        outcome = "Win"
+    else:
+        outcome = "Lose"
+
+    print(outcome)
+
+
+    # Display the outcome of the game and create buttons for "Play Again" and "Quit"
+    end_game = button(700, 350, 150, 75, "red")  # Create a rectangle to show the game outcome
+    end_game.draw_button()
+    end = mod_text(outcome, 700, 350, 30)  # Display the game outcome (win, lose, tie)
+    end.print_text()
+
+    # Create the "Play Again" and "Quit" buttons
+    play_again_button = button(100, 100, 100, 100, "red")
+    play_again_button.draw_button()
+    play_again_text = mod_text("Play Again?", 100, 100, 13)
+    play_again_text.print_text()
+
+    quit_button = button(100, 220, 100, 100, "red")
+    quit_button.draw_button()
+    quit_text = mod_text("Quit?",100,220,13)
+    quit_text.print_text()
+
+    print("ALL CARDS:", all_cards_in_play)
+
+    while True:  # Keep running until a button is clicked
+        clicked = win.getMouse()  # Wait for a mouse click
+        if play_again_button.check_click(clicked) == 1:  # Check if "Play Again" button is clicked
+            win.close()
+            return outcome  # Return the outcome of the game
+        if quit_button.check_click(clicked) == 1:  # Check if "Quit" button is clicked
+            win.close()
+            return 'quit'  # Return 'quit' to exit the game
+
+while True:
+    if game_mode == 1:  # Lobby: allows player to navigate to other game modes
+        button_pressed = game_lobby()  # Display the lobby and get the button pressed
+        if button_pressed == "play":  # If "Play" button is pressed
+            game_mode = 2  # Switch to game mode 2
+        elif button_pressed == 'quit':  # If "Quit" button is pressed
+            break  # Exit the main game loop
+
+    if game_mode == 2:  # Game mode 2: gameplay phase
+        all_cards_in_play = []  # Reset the list of cards in play for each game
+        bet = make_bet(cash)  # Prompt the player to make a bet
+        int(bet)  # Convert bet to an integer
+        cash -= int(bet)  # Deduct the bet amount from cash
+        outcome = play_game(cash, bet, all_cards_in_play)  # Play the game and get the outcome
+        
+        # Update cash based on the game outcome
+        if outcome == "Win":  # If the player wins
+            cash += int(bet) * 2  # Double the bet amount is added to cash
+        elif outcome == "Tie":  # If the game is a tie
+            cash += int(bet)  # Refund the bet amount to cash
+        elif outcome == "quit":  # If the player decides to quit
+            game_mode = 1  # Return to the lobby
