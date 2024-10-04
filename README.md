@@ -15,6 +15,14 @@ To run the program, you will need:
 2. **How to run the Game:**
    - To run the game all you need to is run the file titled BlackJack.py
 
+## Disclaimer
+
+1. **Image Rights**
+   - I do not own the rights to any images included in these files. The images used do not affect functionality and can be replaced with any images of your choice.
+1. **Graphics Library**
+   - I did not create the graphics.py library. More information about the library can be found at https://mcsp.wartburg.edu/zelle/python/
+
+
 ## Author
 - **Name**: Tyne Readman
 - **Date Created**: January 19, 2023
@@ -23,7 +31,6 @@ To run the program, you will need:
 - Fix improper naming conventions for variables, classes, and functions.
 - Make comments more concise and readable (Work in progress as of Sept 20th, 2024).
 - Implement a leaderboard mode by adding a blue button to the left of the "Start" button on the title screen.
-- Add a "Quit Game" button to the betting screen for better user control.
 
 ## Description
 This is a simple blackjack game that begins with a title screen featuring two buttons: "Play" and "Quit".
